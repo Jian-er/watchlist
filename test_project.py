@@ -1,6 +1,7 @@
 import unittest
 
-from app import app, db, Movie, User
+from project import app, db
+from project.models import Movie, User
 
 class ProjectTestCase(unittest.TestCase):
 
@@ -96,6 +97,7 @@ class ProjectTestCase(unittest.TestCase):
         response = self.client.post('/settings', data=dict(name='Test_two'), follow_redirects=True)
         data = response.get_data(as_text=True)
         self.assertIn('设置name成功', data)
+
 
 if __name__ == '__main__':
     unittest.main()
