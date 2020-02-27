@@ -89,5 +89,13 @@ class ProjectTestCase(unittest.TestCase):
         self.assertIn('电影信息已经更新', data)
         self.assertIn('BBB', data)
 
+    # 修改名字
+    def test_updata_name_item(self):
+        self.test_login()
+
+        response = self.client.post('/settings', data=dict(name='Test_two'), follow_redirects=True)
+        data = response.get_data(as_text=True)
+        self.assertIn('设置name成功', data)
+
 if __name__ == '__main__':
     unittest.main()
