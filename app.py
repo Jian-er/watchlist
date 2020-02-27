@@ -2,8 +2,8 @@ import os,sys
 import click
 
 from flask import Flask, render_template, request, flash, redirect, url_for
-
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash,check_password_hash
 
 app = Flask(__name__)
 
@@ -20,6 +20,14 @@ db = SQLAlchemy(app)
 class User(db.Model):
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(20))
+    username = db.Column(db.String(20))
+    password_hash = db.Column(db.String(128))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def validata_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -61,6 +69,25 @@ def forge():
     db.session.commit()
     click.echo('数据导入完成')
 
+# 生成管理员用户
+@app.cli.command()
+@click.option('--username', prompt=True, help='用户名')
+@click.option('--password', prompt=True, help='密码', confirmation_prompt=True, hide_input=True)
+def admin(username, password):
+    db.create_all()
+
+    user = User.query.first()
+    if user is not None:
+        click.echo("更新用户")
+        user.username = username
+        user.set_password(password)
+    else:
+        click.echo('创建用户')
+        user = User(username=username, name='Akihi')
+        user.set_password(password)
+        db.session.add(user)
+    db.session.commit()
+    click.echo('完成')
 
 # 首页
 @app.route('/', methods=['GET', 'POST'])
