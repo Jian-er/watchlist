@@ -6,9 +6,9 @@ app = Flask(__name__)
 def index():
     name = 'Akihi'
     movies = [
-        {'title': '杀破狼', 'year': '2003'},
-        {'title': '扫毒', 'year': '2018'},
-        {'title': '捉妖记', 'year': '2016'},
+        {'title': 'python', 'year': '2003'},
+        {'title': 'C', 'year': '2018'},
+        {'title': 'java', 'year': '2016'},
         {'title': '囧妈', 'year': '2020'},
         {'title': '葫芦娃', 'year': '1989'},
         {'title': '玻璃盒子', 'year': '2020'},
