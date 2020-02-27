@@ -4,7 +4,7 @@ import click
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import LoginManager,UserMixin,login_user,logout_user,login_required,current_user
+from flask_login import LoginManager,UserMixin,login_user,logout_user,login_required,current_user,login_manager
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'klasdjlaksd'
@@ -92,11 +92,14 @@ def admin(username, password):
     click.echo('完成')
 
 # Flask-login 初始化操作
-Login_manager = LoginManager(app)   # 实例化扩展类
-@Login_manager.user_loader
+login_manager = LoginManager(app)   # 实例化扩展类
+@login_manager.user_loader
 def load_user(user_id):   # 创建用户加载回调函数，接受用户ID作为参数
     user = User.query.get(int(user_id))
     return user
+
+login_manager.login_view = 'login'
+login_manager.login_message = '没有登陆'
 
 # 首页
 @app.route('/', methods=['GET', 'POST'])
@@ -190,6 +193,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     flash('退出登录')
