@@ -9,6 +9,11 @@ from project.models import User, Ariticles
 def UEditor():
     return render_template('demo.html')
 
+# base
+@app.route("/base")
+def base():
+    return render_template('base.html')
+
 
 # 首页
 @app.route('/', methods=['GET', 'POST'])
