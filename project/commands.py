@@ -1,6 +1,6 @@
 import click
 
-from project.models import User, Movie
+from project.models import User, Ariticles
 from project import db, app
 
 
@@ -33,7 +33,7 @@ def forge():
     user = User(name=name)
     db.session.add(user)
     for m in movies:
-        movie = Movie(title=m['title'],year=m['year'])
+        movie = Ariticles(title=m['title'],year=m['year'])
         db.session.add(movie)
     db.session.commit()
     click.echo('数据导入完成')

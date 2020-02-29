@@ -1,7 +1,13 @@
 from flask import request, flash, render_template, redirect, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from project import db,app
-from project.models import User, Movie
+from project.models import User, Ariticles
+
+
+# 富文本编辑器
+@app.route("/UEditor")
+def UEditor():
+    return render_template('demo.html')
 
 
 # 首页
@@ -19,13 +25,13 @@ def index():
             flash('输入错误')  # 错误提示
             return redirect(url_for('index'))  # 重定向回主页
 
-        movie = Movie(title=title, year=year)  # 创建记录
+        movie = Ariticles(title=title, year=year)  # 创建记录
         db.session.add(movie)  # 添加到数据库会话
         db.session.commit()  # 提交数据库会话
         flash('数据创建成功')
         return redirect(url_for('index'))
 
-    movies = Movie.query.all()
+    movies = Ariticles.query.all()
     return render_template('index.html', movies=movies)
 
 
@@ -33,7 +39,7 @@ def index():
 @app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
 @login_required
 def edit(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
+    movie = Ariticles.query.get_or_404(movie_id)
 
     if request.method == 'POST':
         title = request.form['title']
@@ -71,7 +77,7 @@ def settings():
 @app.route('/movie/delete/<int:movie_id>', methods=['POST'])
 @login_required
 def delete(movie_id):
-    movie = Movie.query.get_or_404(movie_id)
+    movie = Ariticles.query.get_or_404(movie_id)
     db.session.delete(movie)
     db.session.commit()
     flash('删除数据成功')
