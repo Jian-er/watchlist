@@ -1,3 +1,5 @@
+import time
+
 from flask import request, flash, render_template, redirect, url_for
 from flask_login import current_user, login_required, login_user, logout_user
 from project import db,app
@@ -122,4 +124,22 @@ def publish():
         flash('数据创建成功')
         return redirect(url_for('index'))
     return render_template('publish.html')
+
+# 详情
+@app.route('/ariticle_id/details/<int:ariticle_id>', methods=['GET', 'POST'])
+@login_required
+def details(ariticle_id):
+    ariticle = Ariticles.query.get_or_404(ariticle_id)
+    user = User.query.get_or_404(ariticle.author)
+    tiem_str = str(ariticle.pubdate)[:str(ariticle.pubdate).find(".")]
+    timeArray= time.strptime(tiem_str, "%Y-%m-%d %H:%M:%S")
+    otherStyleTime = time.strftime("%Y/%m/%d %H:%M:%S", timeArray)
+    print(otherStyleTime)
+    content = {
+        'ariticle':ariticle,
+        'user':user,
+        'time':otherStyleTime
+    }
+    return render_template("details.html", content=content)
+
 
