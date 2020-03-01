@@ -13,11 +13,11 @@
 </head>
 
 <body>
-    <div style="background-image:url({{ url_for('static',filename='images/1.jpg') }});padding-bottom: 2%">
+    <div style="background-image:url({{ url_for('static',filename='images/1.jpg') }});padding-bottom: 2%;padding-top: 2%">
         <div class="text-center" style="color: white;font-size: 50px">
                 {% if current_user.is_authenticated %}
-                    <img src="{{ url_for('static',filename='images/2.jpg') }}" alt="" class="img-circle" style="width:8%">
-                   {{ user.name }}的博客
+                    <img src="{{ url_for('static',filename='images/2.jpg') }}" alt="" class="img-circle" style="width:5%">
+                   <a class="" href="{{ url_for('settings') }}" role="button" style="color: white;">{{ user.name }}的博客</a>
                 {% else %}
                     博客
                 {% endif %}
@@ -29,8 +29,8 @@
                 </div>
                 <div class="col-md-2 col-md-offset-7">
                     {% if current_user.is_authenticated %}
+                        <a class="btn btn-default" href="{{ url_for('login') }}" role="button" style="background: rgba(0, 0, 0, 0.3);color: white;width: 58%">写博客</a>
                         <a class="btn btn-default" href="{{ url_for('logout') }}" role="button" style="background: rgba(0, 0, 0, 0.3);color: white;width: 58%">退出</a>
-                        <a class="btn btn-default" href="{{ url_for('settings') }}" role="button" style="background: rgba(0, 0, 0, 0.3);color: white;width: 58%">设置</a>
                     {% else %}
                         <a class="btn btn-default" href="{{ url_for('login') }}" role="button" style="background: rgba(0, 0, 0, 0.3);color: white;width: 58%">登陆</a>
                     {% endif %}

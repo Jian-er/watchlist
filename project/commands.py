@@ -18,23 +18,24 @@ def initdb(drop):
 def forge():
     db.create_all()
     name = "Akihi"
-    movies = [
-        {'title':'杀破狼','year':'2003'},
-        {'title':'扫毒','year':'2018'},
-        {'title':'捉妖记','year':'2016'},
-        {'title':'囧妈','year':'2020'},
-        {'title':'葫芦娃','year':'1989'},
-        {'title':'玻璃盒子','year':'2020'},
-        {'title':'调酒师','year':'2020'},
-        {'title':'釜山行','year':'2017'},
-        {'title':'导火索','year':'2005'},
-        {'title':'叶问','year':'2015'}
-    ]
     user = User(name=name)
     db.session.add(user)
-    for m in movies:
-        movie = Ariticles(title=m['title'],year=m['year'])
-        db.session.add(movie)
+    db.session.commit()
+
+    ariticles = [
+        {'title':'杀破狼','content':'111111111'},
+        {'title':'扫毒','content':'222222222222'},
+        {'title':'捉妖记','content':'33333333333'},
+        {'title':'囧妈','content':'4444444444'},
+        {'title':'葫芦娃','content':'55555555'},
+        {'title':'玻璃盒子','content':'6666666'},
+        {'title':'调酒师','content':'7777777'},
+        {'title':'釜山行','content':'88888888'},
+        {'title':'导火索','content':'99999999'}
+    ]
+    for a in ariticles:
+        ariticle = Ariticles(title=a['title'],content=a['content'], author=User.query.first().id)
+        db.session.add(ariticle)
     db.session.commit()
     click.echo('数据导入完成')
 
