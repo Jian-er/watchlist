@@ -44,22 +44,15 @@ def index():
 @app.route('/ariticle_id/edit/<int:ariticle_id>', methods=['GET', 'POST'])
 @login_required
 def edit(ariticle_id):
-    movie = Ariticles.query.get_or_404(ariticle_id)
+    ariticle = Ariticles.query.get_or_404(ariticle_id)
 
     if request.method == 'POST':
         title = request.form['title']
-        year = request.form['year']
-
-        if not title or not year or len(year) > 4 or len(title) > 60:
-            flash('输入错误')
-            return redirect(url_for('edit'), movie_id=ariticle_id)
-
-        movie.title = title
-        movie.year = year
+        ariticle.title = title
         db.session.commit()
         flash('电影信息已经更新')
         return redirect(url_for('index'))
-    return render_template('edit.html', movie=movie)
+    return render_template('edit.html', ariticle=ariticle_id)
 
 @app.route('/settings',methods=['GET','POST'])
 @login_required
