@@ -4,10 +4,6 @@ from project import db,app
 from project.models import User, Ariticles
 
 
-# 富文本编辑器
-@app.route("/UEditor")
-def UEditor():
-    return render_template('demo.html')
 
 # base
 @app.route("/base")
@@ -105,4 +101,25 @@ def logout():
     logout_user()
     flash('退出登录')
     return redirect(url_for('index'))
+
+@app.route("/publish", methods=['GET', 'POST'])
+def publish():
+    if request.method == 'POST':
+        if not current_user.is_authenticated:
+            return redirect(url_for('index'))
+        # 获取表单的数据
+        title = request.form.get('title')
+        content = request.form.get('content')
+
+        # 验证title，year不为空，并且title长度不大于60，year的长度不大于4
+        if not title or len(title) > 60:
+            flash('输入错误')  # 错误提示
+            return redirect(url_for('index'))  # 重定向回主页
+
+        ariticles = Ariticles(title=title, content=content,author=current_user.id)  # 创建记录
+        db.session.add(ariticles)  # 添加到数据库会话
+        db.session.commit()  # 提交数据库会话
+        flash('数据创建成功')
+        return redirect(url_for('index'))
+    return render_template('publish.html')
 
